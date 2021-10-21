@@ -15,8 +15,7 @@ $appdate=$_POST['appdate'];
 $time=$_POST['apptime'];
 $userstatus=1;
 $docstatus=1;
-$query=$con->query("INSERT into appointment(doctorSpecialization,doctorId,userId,consultancyFees,appointmentDate,appointmentTime,userStatus,doctorStatus,updationDate) 
-values('$specilization',$doctorid,$userid,$fees,'$appdate','$time',$userstatus,$docstatus,CURRENT_TIMESTAMP)");
+$query=$con->query(" CALL `add_appointment`($specilization,$doctorid,$userid,$fees,$appdate,$time,CURRENT_TIMESTAMP,$userstatus,$docstatus,CURRENT_TIMESTAMP)");
 	if($query)
 	{
 		echo "<script>alert('Your appointment successfully booked');</script>";
