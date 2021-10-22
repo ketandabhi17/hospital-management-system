@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Oct 21, 2021 at 11:41 AM
+-- Generation Time: Oct 22, 2021 at 01:31 PM
 -- Server version: 8.0.26
 -- PHP Version: 7.4.24
 
@@ -25,6 +25,16 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`%` PROCEDURE `add_appointment` (IN `spec` VARCHAR(255), IN `doc_id` INT(10), IN `user_id` INT(10), IN `fees` INT(10), IN `appointdate` VARCHAR(255), IN `apointtime` VARCHAR(255), IN `userstatus` INT(10), IN `docstatus` INT(10))  BEGIN
+INSERT into appointment(doctorSpecialization,doctorId,userId,consultancyFees,appointmentDate,appointmentTime,userStatus,doctorStatus) 
+values(spec,doc_id,user_id,fees,appointdate,apointtime,userstatus,docstatus);
+END$$
+
+CREATE DEFINER=`root`@`%` PROCEDURE `add_docslot` (IN `dt` DATE, IN `dy` VARCHAR(255), IN `strt` TIME, IN `end` TIME, IN `avail` VARCHAR(255))  BEGIN
+INSERT INTO `docslot`(`date`,`day`,`start_time`,`end_time`,`availability`)
+VALUES(dt, dy, strt, end, avail);
+END$$
+
 CREATE DEFINER=`root`@`%` PROCEDURE `add_doctor` (IN `specilization` INT(20), IN `doctorName` VARCHAR(255), IN `address` LONGTEXT, IN `docFees` VARCHAR(255), IN `contactno` BIGINT(10), IN `docEmail` VARCHAR(255), IN `password` VARCHAR(255), IN `creationDate` TIMESTAMP, IN `updationDate` TIMESTAMP)  BEGIN
 INSERT INTO doctors(specilization,doctorName,address,docFees,contactno, docEmail, password,creationDate, updationDate)VALUES(specilization,doctorName,address,docFees,contactno,docEmail,password,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 END$$
@@ -60,6 +70,10 @@ SET id=LAST_INSERT_ID();
 END$$
 
 CREATE DEFINER=`root`@`%` PROCEDURE `update_doctor` (IN `did` INT(10), IN `spec` INT(10), IN `docname` VARCHAR(255), IN `address` LONGTEXT, IN `docfees` VARCHAR(255), IN `contactno` BIGINT(20), IN `docemail` VARCHAR(255))  UPDATE doctors SET specilization=spec,doctorName=docname,address=address,docFees=docfees,contactno=contactno,docEmail=docemail where doc_id=did$$
+
+CREATE DEFINER=`root`@`%` PROCEDURE `update_patient` (IN `id` INT(10), IN `name` VARCHAR(200), IN `cont` BIGINT(100), IN `email` VARCHAR(200), IN `gender` VARCHAR(50), IN `address` MEDIUMTEXT, IN `age` INT(10), IN `medhis` MEDIUMTEXT)  BEGIN
+UPDATE `tblpatient` SET `PatientName` = name, `PatientContno` = cont, `PatientEmail` =email, `PatientGender` = gender, `PatientAdd` =address, `PatientAge` = age, `PatientMedhis` = medhis WHERE `tblpatient`.`Pat_id` = id; 
+END$$
 
 DELIMITER ;
 
@@ -97,19 +111,53 @@ CREATE TABLE `appointment` (
   `consultancyFees` int DEFAULT NULL,
   `appointmentDate` varchar(255) DEFAULT NULL,
   `appointmentTime` varchar(255) DEFAULT NULL,
-  `postingDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `userStatus` int DEFAULT NULL,
-  `doctorStatus` int DEFAULT NULL,
-  `updationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+  `doctorStatus` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `appointment`
 --
 
-INSERT INTO `appointment` (`id`, `doctorSpecialization`, `doctorId`, `userId`, `consultancyFees`, `appointmentDate`, `appointmentTime`, `postingDate`, `userStatus`, `doctorStatus`, `updationDate`) VALUES
-(1, 'Test', 7, 6, 600, '2021-10-11', '9:15 AM', '2021-10-11 14:31:28', 1, 0, '2021-10-11 16:10:11'),
-(2, '3', 4, 3, 200, ' 	2021-10-12 08:39:18', '04:30 ', '2021-10-21 10:58:08', 1, 1, '2021-10-12 08:39:18');
+INSERT INTO `appointment` (`id`, `doctorSpecialization`, `doctorId`, `userId`, `consultancyFees`, `appointmentDate`, `appointmentTime`, `userStatus`, `doctorStatus`) VALUES
+(1, 'Test', 7, 6, 600, '2021-10-11', '9:15 AM', 1, 0),
+(2, '3', 4, 3, 200, ' 	2021-10-12 08:39:18', '04:30 ', 1, 1),
+(3, '4', 7, 6, 600, '2021-10-11 14:31:28', '14:31:28', 1, 1),
+(4, '2', 1, 1, 100, '2021-10-11', '9:15 AM', 1, 1),
+(5, '2', 2, 2, 1000, '2021-10-11', '10:15', 1, 1),
+(6, 'test', 6, 4, 2000, '2021-10-12 ', '11:00', 1, 1),
+(7, 'test', 4, 6, 2300, '20/10/2021', '10:50', 1, 1),
+(8, 'test', 5, 6, 2300, '20/10/2021', '10:50', 1, 1),
+(9, 'homeopathy', 8, 1, 2300, '20/10/2021', '10:50', 1, 1),
+(10, 'homeopathy', 8, 1, 2300, '20/10/2021', '10:50', 1, 1),
+(11, 'homeopathy', 8, 1, 2300, '20/10/2021', '10:50', 1, 1),
+(12, 'homeopathy', 8, 1, 2300, '20/10/2021', '10:50', 1, 1),
+(13, 'homeopathy', 25, 79, 2300, '2021-10-23', '1:45 PM', 1, 1),
+(14, 'Dermatologist', 3, 79, 2300, '2021-11-07', '3:45 PM', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `docslot`
+--
+
+CREATE TABLE `docslot` (
+  `slot_id` int NOT NULL,
+  `date` date NOT NULL,
+  `day` varchar(10) NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `availability` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `docslot`
+--
+
+INSERT INTO `docslot` (`slot_id`, `date`, `day`, `start_time`, `end_time`, `availability`) VALUES
+(1, '2021-10-23', 'saturday', '12:00:00', '01:00:00', 'available'),
+(2, '2021-10-26', 'tuesday', '00:00:12', '00:00:01', 'not available'),
+(3, '2021-10-20', 'Wednesday', '00:00:10', '00:00:12', 'available');
 
 -- --------------------------------------------------------
 
@@ -188,13 +236,8 @@ CREATE TABLE `tblmedicalhistory` (
 --
 
 INSERT INTO `tblmedicalhistory` (`PatientID`, `BloodPressure`, `BloodSugar`, `Weight`, `Temperature`, `MedicalPres`, `CreationDate`) VALUES
-(1, 'asdf', 'sdf', '23', 'sdf', 'sdfgdfg', '2021-10-20 13:03:58'),
-(2, 'sads', 'asdas', 'asdas', 'sadsa', 'asdasd', '2021-10-14 05:14:36'),
-(3, 'asdf', 'sdfg', '55', 'dssf', 'asd', '2021-10-21 05:03:05'),
-(5, 'hgfd', 'sad', '34', 'dfg', 'sdfg', '2021-10-21 05:00:41'),
-(6, 'asdfghjk', 'asdfghjkl;', '56', 'ASDFGH', 'ASDFG', '2021-10-21 05:14:33'),
-(7, 'sadf', 'asdcv', '55', 'asdfg', 'sdfgh', '2021-10-21 05:10:10'),
-(11, 'no', 'no', '88', 'no', 'no', '2021-10-21 08:10:58');
+(1, 'DAS', 'ASD', '44', 'DSAD', 'ASDSA', '2021-10-22 12:37:20'),
+(3, 'asdf', 'sdfg', '55', 'dssf', 'asd', '2021-10-21 05:03:05');
 
 -- --------------------------------------------------------
 
@@ -218,15 +261,15 @@ CREATE TABLE `tblpatient` (
 --
 
 INSERT INTO `tblpatient` (`Pat_id`, `PatientName`, `PatientContno`, `PatientEmail`, `PatientGender`, `PatientAdd`, `PatientAge`, `PatientMedhis`) VALUES
-(1, 'Manisha Jha', 4558968789, 'test@gmail.com', 'Male', 'New Delhi', 26, 'She is diabetic patient'),
+(1, 'Manisha ', 8978451245, 'manisha@gmail.com', 'female', 'delhi', 27, 'She is very healthy now....'),
 (2, 'ramesh', 8956237845, 'ramesh@gmail.com', 'male', 'asdlj', 22, 'no'),
 (5, 'raj', 1234567890, 'raj@gmail.com', 'male', 'botad', 33, 'no'),
 (6, 'asnf', 1234567890, 'a@gmail.com', 'male', 'asd', 23, 'asdfgnm'),
-(7, 'sd', 1234567890, 'a@gmail.com', 'male', 'fgf', 22, 'ff'),
+(7, 'sumit', 8956231245, 'a@gmail.com', 'Male', 'rajkot', 10, 'he is health'),
 (8, 'bharat', 1234567890, 'bharat@gmail.com', 'male', 'ahmedabad', 22, 'no medical history'),
 (9, 'rishi', 1234567890, 'rishi@gmail.com', 'male', 'ahmedabad', 22, 'no medical history'),
 (10, 'aditya', 1234567890, 'adi@gmail.com', 'male', 'botad', 15, 'no medical history'),
-(11, 'asdf', 1234567890, 'a@gmail.com', 'female', 'asdfghjk', 19, 'sdfgh');
+(11, 'paresh', 9898989898, 'paresh@gmail.com', 'male', 'bhuj', 22, 'no medical history');
 
 -- --------------------------------------------------------
 
@@ -259,6 +302,18 @@ INSERT INTO `users` (`id`, `fullname`, `address`, `city`, `gender`, `email`, `pa
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `appointment`
+--
+ALTER TABLE `appointment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `docslot`
+--
+ALTER TABLE `docslot`
+  ADD PRIMARY KEY (`slot_id`);
 
 --
 -- Indexes for table `doctors`
@@ -294,6 +349,18 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `appointment`
+--
+ALTER TABLE `appointment`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `docslot`
+--
+ALTER TABLE `docslot`
+  MODIFY `slot_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `doctors`
