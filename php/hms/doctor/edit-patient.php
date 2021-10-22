@@ -15,7 +15,7 @@ $gender=$_POST['gender'];
 $pataddress=$_POST['pataddress'];
 $patage=$_POST['patage'];
 $medhis=$_POST['medhis'];
-$sql=$con->query("UPDATE tblpatient set PatientName='$patname',PatientContno='$patcontact',PatientEmail='$patemail',PatientGender='$gender',PatientAdd='$pataddress',PatientAge='$patage',PatientMedhis='$medhis' where ID='$eid'");
+$sql=$con->query(" call `update_patient`($eid,'$patname',$patcontact,'$patemail','$gender','$pataddress',$patage,'$medhis')");
 if($sql)
 {
 echo "<script>alert('Patient info updated Successfully');</script>";
@@ -83,7 +83,8 @@ header('location:manage-patient.php');
 <form role="form" name="" method="post">
 <?php
  $eid=$_GET['editid'];
-$ret=$con->query("select * from tblpatient where ID='$eid'");
+ echo $eid;
+$ret=$con->query("SELECT * from tblpatient where Pat_id='$eid'");
 $cnt=1;
 while ($row=$ret->fetch_array()) {
 

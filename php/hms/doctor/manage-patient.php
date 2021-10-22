@@ -80,7 +80,7 @@ while($row=$sql->fetch_array())
 </td>
 <td>
 
-<a href="view-patient.php?viewid=<?php echo $row['Pat_id'];?>"><i class="fa fa-eye"></i></a>
+<a href="edit-patient.php?editid=<?php echo $row['Pat_id'];?>"><i class="fa fa-edit"></i></a> || <a href="view-patient.php?viewid=<?php echo $row['Pat_id'];?>"><i class="fa fa-eye"></i></a>
 
 </td>
 </tr>

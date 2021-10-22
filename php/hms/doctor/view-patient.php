@@ -5,15 +5,9 @@ include('include/config.php');
 include('include/checklogin.php');
 check_login();
 // echo $vid;
-if(isset($_GET['del']))
-		  {
-		          // $sql=$con->query("DELETE FROM tblmedicalhistory where Patientid = ".$_GET['Patientid']."");
-		          $sql=$con->query(" CALL `delete_medhis`($vid)");
-                  $_SESSION['msg']="data deleted !!";
-		  }
+
 if(isset($_POST['submit']))
   {
-    
     $vid=$_GET['viewid'];
     $bs=$_POST['bs'];
     $bp=$_POST['bp'];
@@ -34,6 +28,16 @@ if(isset($_POST['submit']))
 
   
 }
+if(isset($_GET['del']))
+		  {
+		          $sql=$con->query("DELETE FROM tblmedicalhistory where Patientid = ".$_GET['Patientid']."");
+		            // $sql=$con->query(" CALL `delete_medhis`()");
+                  $_SESSION['msg']="data deleted !!";
+		  }
+      else{
+        // echo '<script>alert("Something Went Wrong. Please try again")</script>';
+
+      }
 
 ?>
 <!DOCTYPE html>
@@ -158,16 +162,89 @@ while ($row=$ret->fetch_array()) {
 </table>
 
 <p align="center">                            
+ <!-- <button id="add" class="btn btn-primary waves-effect waves-light w-lg" >add</button>
+ <button id="update" class="btn btn-primary waves-effect waves-light w-lg" >update</button>
+ <button id="delete" class="btn btn-primary waves-effect waves-light w-lg" >delete</button>
+<script type="text/javascript">
+    document.getElementById("add").onclick = function () {
+        location.href = "add.php";
+    };
+    document.getElementById("update").onclick = function () {
+        location.href = "update.php";
+    };
+    document.getElementById("delete").onclick = function () {
+      return confirm('Are you sure you want to delete?');
+    };
+</script> -->
+ <!-- <button class="btn btn-primary waves-effect waves-light w-lg">Update Medical History</button>   -->
  <button class="btn btn-primary waves-effect waves-light w-lg" data-toggle="modal" data-target="#myModal">Add Medical History</button> 
- <!-- <button class="btn btn-primary waves-effect waves-light w-lg" data-toggle="modal" data-target="#myModal1">Update Medical History</button>   -->
+ <button class="btn btn-primary waves-effect waves-light w-lg" data-toggle="modal" data-target="#update">update Medical History</button> 
  <a href="view-patient.php?Patientid=<?php echo $vid?>&del=delete" onClick="return confirm('Are you sure you want to delete?')"class="btn btn-transparent btn-xs tooltips" tooltip-placement="top" tooltip="Remove"><i class="fa fa-times fa fa-white"></i></a>
 </p>  
 
 <?php  ?>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-     <div class="modal-content">
-      <div class="modal-header">
+
+                                          <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">update Medical History</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                <table class="table table-bordered table-hover data-tables">
+                                          <form method="post" name="submit">
+
+                                              <tr>
+                                            <th>Blood Pressure :</th>
+                                            <td>
+                                              <?php
+                                                $q=$con->query("SELECT  from tblmedicalhistory where PatientID= ".$_GET['Patientid']."");
+                                                // $a=$q->fetch_array();
+                                                // echo $a;
+                                                ?>
+                                            <input name="bp" placeholder="Blood Pressure" class="form-control wd-450" required="true"><?php echo htmlentities($a['BloodPressure']);?></td>
+                                          </tr>                          
+                                            <tr>
+                                            <th>Blood Sugar :</th>
+                                            <td>
+                                            <input name="bs" placeholder="Blood Sugar" class="form-control wd-450" required="true"></td>
+                                          </tr> 
+                                          <tr>
+                                            <th>Weight :</th>
+                                            <td>
+                                            <input name="weight" placeholder="Weight" class="form-control wd-450" required="true"></td>
+                                          </tr>
+                                          <tr>
+                                            <th>Body Temprature :</th>
+                                            <td>
+                                            <input name="temp" placeholder="Blood Sugar" class="form-control wd-450" required="true"></td>
+                                          </tr>
+                                                                
+                                            <tr>
+                                            <th>Prescription :</th>
+                                            <td>
+                                            <textarea name="pres" placeholder="Medical Prescription" rows="12" cols="14" class="form-control wd-450" required="true"></textarea></td>
+                                          </tr>  
+                                          
+                                        </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                          
+                                          </form>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                              <div class="modal-dialog" role="document">
+                                                 <div class="modal-content">
+                                                  <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalLabel">Add Medical History</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -176,49 +253,44 @@ while ($row=$ret->fetch_array()) {
                                                 <div class="modal-body">
                                                 <table class="table table-bordered table-hover data-tables">
 
-                                 <form method="post" name="submit">
-
-      <tr>
-    <th>Blood Pressure :</th>
-    <td>
-    <input name="bp" placeholder="Blood Pressure" class="form-control wd-450" required="true"></td>
-  </tr>                          
-     <tr>
-    <th>Blood Sugar :</th>
-    <td>
-    <input name="bs" placeholder="Blood Sugar" class="form-control wd-450" required="true"></td>
-  </tr> 
-  <tr>
-    <th>Weight :</th>
-    <td>
-    <input name="weight" placeholder="Weight" class="form-control wd-450" required="true"></td>
-  </tr>
-  <tr>
-    <th>Body Temprature :</th>
-    <td>
-    <input name="temp" placeholder="Blood Sugar" class="form-control wd-450" required="true"></td>
-  </tr>
-                         
-     <tr>
-    <th>Prescription :</th>
-    <td>
-    <textarea name="pres" placeholder="Medical Prescription" rows="12" cols="14" class="form-control wd-450" required="true"></textarea></td>
-  </tr>  
-   
-</table>
-</div>
-
-
-<div class="modal-footer">
- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
- <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-  
-  </form>
-</div>
-</div>
-</div>
-</div>
-</div>
+                                                <form method="post" name="submit">
+                                                  <tr>
+                                                <th>Blood Pressure :</th>
+                                                <td>
+                                                <input name="bp" placeholder="Blood Pressure" class="form-control wd-450" required="true"></td>
+                                              </tr>                          
+                                                 <tr>
+                                                <th>Blood Sugar :</th>
+                                                <td>
+                                                <input name="bs" placeholder="Blood Sugar" class="form-control wd-450" required="true"></td>
+                                              </tr> 
+                                              <tr>
+                                                <th>Weight :</th>
+                                                <td>
+                                                <input name="weight" placeholder="Weight" class="form-control wd-450" required="true"></td>
+                                              </tr>
+                                              <tr>
+                                                <th>Body Temprature :</th>
+                                                <td>
+                                                <input name="temp" placeholder="Blood Sugar" class="form-control wd-450" required="true"></td>
+                                              </tr>
+                                               <tr>
+                                                <th>Prescription :</th>
+                                                <td>
+                                                <textarea name="pres" placeholder="Medical Prescription" rows="12" cols="14" class="form-control wd-450" required="true"></textarea></td>
+                                              </tr>
+                                            </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                             </form>
+                                         </div>
+                                     </div>
+                                  </div>
+                                  
+                              </div>
+                          </div>
 
 
 </div>

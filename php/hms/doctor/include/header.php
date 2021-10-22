@@ -71,3 +71,6 @@ while($row=$query->fetch_array())
 					
 					<!-- end: NAVBAR COLLAPSE -->
 				</header>
+				<?php
+				
+				?>

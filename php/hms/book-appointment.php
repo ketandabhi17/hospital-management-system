@@ -4,23 +4,54 @@ session_start();
 include('config.php');
 include('include/checklogin.php');
 check_login();
-
+function clearResult($conn){
+	while($conn -> next_result()){
+			if($result = $conn -> store_result()){
+				$result -> free();
+			}
+		}
+	}
 if(isset($_POST['submit']))
 {
 $specilization=$_POST['Doctorspecialization'];
-$doctorid=$_POST['doctor'];
+echo $specilization;
+$doctorid=$_POST['doc_id'];
+// $doctorid=$_POST['doctor'];
+echo $doctorid;
 $userid=$_SESSION['id'];
+echo $userid;
 $fees=$_POST['fees'];
+echo $fees;
 $appdate=$_POST['appdate'];
+echo $appdate;
 $time=$_POST['apptime'];
+echo $time;
 $userstatus=1;
+echo $userstatus;
 $docstatus=1;
-$query=$con->query(" CALL `add_appointment`($specilization,$doctorid,$userid,$fees,$appdate,$time,CURRENT_TIMESTAMP,$userstatus,$docstatus,CURRENT_TIMESTAMP)");
-	if($query)
+echo $docstatus;
+// $b=$_GET["doc_id"];
+// echo $b;
+// $a=$con->query("select doc_id from doctors where doc_id = $b");
+// $c=$a->fetch_array();
+// $_SESSION['doc_id']=$c;
+// echo $c;
+// clearResult($con);
+// $query=$con->query("call `add_appointment`($specilization,3,$userid,1000,$appdate,$time,$userstatus,$docstatus)");
+$sql=$con->query("INSERT INTO `appointment` (`id`, `doctorSpecialization`, `doctorId`, `userId`, `consultancyFees`, `appointmentDate`, `appointmentTime`, `userStatus`, `doctorStatus`)
+ VALUES (NULL,'$specilization', $doctorid, $userid, '2300', '$appdate', '$time', $userstatus, $docstatus)");
+clearResult($con);
+
+	if($sql)
 	{
 		echo "<script>alert('Your appointment successfully booked');</script>";
 	}
-
+	else{
+		echo "<script>alert('appointment wasn't booked');</script>";
+	}
+}
+else{
+	echo "<script>alert('appointment wasn't booked');</script>";
 }
 ?>
 <!DOCTYPE html>
@@ -111,8 +142,8 @@ function getfee(val) {
 													<h5 class="panel-title">Book Appointment</h5>
 												</div>
 												<div class="panel-body">
-								<p style="color:red;"><?php echo htmlentities($_SESSION['msg1']);?>
-								<?php echo htmlentities($_SESSION['msg1']="");?></p>	
+														<p style="color:red;"><?php echo htmlentities($_SESSION['msg1']);?>
+														<?php echo htmlentities($_SESSION['msg1']="");?></p>	
 													<form role="form" name="book" method="post" >
 														
 
@@ -123,7 +154,8 @@ function getfee(val) {
 															</label>
 																<select name="Doctorspecialization" class="form-control" onChange="getdoctor(this.value);" required="required">
 																<option value="">Select Specialization</option>
-																<?php $ret=mysqli_query($con,"select * from doctorspecilization");
+																<?php $ret=$con->query("select * from doctorspecilization");
+																	clearResult($con);
 																	while($row=$ret->fetch_array())
 																	{
 																	?>
@@ -136,22 +168,22 @@ function getfee(val) {
 														</div>
 
 
-
-
 														<div class="form-group">
-															<label for="doctor">
+															<label for="doc_id">
 																Doctors
 															</label>
-															<select name="doctor" class="form-control" id="doctor" onChange="getfee(this.value);" required="required">
-															<option value="">Select Doctor</option>
+															<select name="doc_id" class="form-control" id="doc_id" onChange="getfee(this.value);" required="required">
+															<option value="doc_id">Select Doctor</option>
 															<?php $ret=$con->query("select * from doctors");
-																	while($row=$ret->fetch_array())
-																	{
-																	?>
-																<option value="<?php echo htmlentities($row['doctorName']);?>">
-																	<?php echo htmlentities($row['doctorName']);?>
-																</option>
-																<?php } ?>
+															while($row=$ret->fetch_array())
+															{
+															?>
+															<option value="<?php echo htmlentities($row['doc_id']);?>">
+																<?php echo htmlentities($row['doctorName']);?>
+																<?php echo htmlentities($row['doc_id']);?>
+															</option>
+															<?php } ?>
+																
 															</select>
 														</div>
 
@@ -164,7 +196,7 @@ function getfee(val) {
 																Consultancy Fees
 															</label>
 															<select name="fees" class="form-control" id="fees"  readonly>
-															
+																<option value="100">100</option>
 															</select>
 														</div>
 														
@@ -174,17 +206,13 @@ function getfee(val) {
 															</label>
 															<input class="form-control datepicker" name="appdate"  required="required" data-date-format="yyyy-mm-dd">
 	
+															</div>
 														</div>
 														
 														<div class="form-group">
-															<label for="Appointmenttime">
-														
-														Time
-													
-															</label>
+															<label for="Appointmenttime">Time</label>
 															<input class="form-control" name="apptime" id="timepicker1" required="required">eg : 10:00 PM
-														</div>														
-														
+														</div>
 														<button type="submit" name="submit" class="btn btn-o btn-primary">
 															Submit
 														</button>

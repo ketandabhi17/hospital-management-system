@@ -77,12 +77,12 @@ check_login();
 											</tr>
 										</thead>
 										<tbody>
-<?php
-$sql=$con->query("SELECT doctors.doctorName as docname,users.fullName as pname,appointment.*  from appointment join doctors on doctors.id=appointment.doctorId join users on users.id=appointment.userId ");
-$cnt=1;
-while($row=$sql->fetch_array())
-{
-?>
+												<?php
+												$sql=$con->query("SELECT doctors.doctorName as docname,users.fullName as pname,appointment.*  from appointment join doctors on doctors.id=appointment.doctorId join users on users.id=appointment.userId ");
+												$cnt=1;
+												while($row=$sql->fetch_array())
+												{
+												?>
 
 											<tr>
 												<td class="center"><?php echo $cnt;?>.</td>
@@ -95,19 +95,19 @@ while($row=$sql->fetch_array())
 												</td>
 												<td><?php echo $row['postingDate'];?></td>
 												<td>
-<?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
-{
-	echo "Active";
-}
-if(($row['userStatus']==0) && ($row['doctorStatus']==1))  
-{
-	echo "Cancel by Patient";
-}
+													<?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
+													{
+														echo "Active";
+													}
+													if(($row['userStatus']==0) && ($row['doctorStatus']==1))  
+													{
+														echo "Cancel by Patient";
+													}
 
-if(($row['userStatus']==1) && ($row['doctorStatus']==0))  
-{
-	echo "Cancel by Doctor";
-}
+													if(($row['userStatus']==1) && ($row['doctorStatus']==0))  
+													{
+														echo "Cancel by Doctor";
+													}
 
 
 
@@ -118,11 +118,11 @@ if(($row['userStatus']==1) && ($row['doctorStatus']==0))
 { 
 
 													
-echo "No Action yet";
-	 } else {
-
-		echo "Canceled";
-		} ?>
+													echo "No Action yet";
+														 } else {
+														
+															echo "Canceled";
+															} ?>
 												</div>
 												<div class="visible-xs visible-sm hidden-md hidden-lg">
 													<div class="btn-group" dropdown is-open="status.isopen">
@@ -171,10 +171,7 @@ $cnt=$cnt+1;
 	<?php include('include/footer.php');?>
 			<!-- end: FOOTER -->
 		
-			<!-- start: SETTINGS -->
-	<?php include('include/setting.php');?>
 			
-			<!-- end: SETTINGS -->
 		</div>
 		<!-- start: MAIN JAVASCRIPTS -->
 		<script src="vendor/jquery/jquery.min.js"></script>

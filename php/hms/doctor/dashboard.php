@@ -58,7 +58,8 @@ check_login();
 						<!-- start: BASIC EXAMPLE -->
 							<div class="container-fluid container-fullw bg-white">
 							<div class="row">
-								<div class="col-sm-4">
+								
+							<div class="col-sm-4">
 									<div class="panel panel-white no-radius text-center">
 										<div class="panel-body">
 											<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-smile-o fa-stack-1x fa-inverse"></i> </span>
@@ -72,6 +73,22 @@ check_login();
 										</div>
 									</div>
 								</div>
+								
+								<div class="col-sm-4">
+									<div class="panel panel-white no-radius text-center">
+										<div class="panel-body">
+											<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-clock-o fa-stack-1x fa-inverse"></i> </span>
+											<h2 class="StepTitle">Time slots</h2>
+											
+											<p class="links cl-effect-1">
+												<a href="demo2.php">
+													Time slots
+												</a>
+											</p>
+										</div>
+									</div>
+								</div>	
+
 								<div class="col-sm-4">
 									<div class="panel panel-white no-radius text-center">
 										<div class="panel-body">
