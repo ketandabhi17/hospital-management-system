@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Oct 22, 2021 at 01:31 PM
+-- Generation Time: Oct 23, 2021 at 07:20 AM
 -- Server version: 8.0.26
 -- PHP Version: 7.4.24
 
@@ -132,8 +132,10 @@ INSERT INTO `appointment` (`id`, `doctorSpecialization`, `doctorId`, `userId`, `
 (10, 'homeopathy', 8, 1, 2300, '20/10/2021', '10:50', 1, 1),
 (11, 'homeopathy', 8, 1, 2300, '20/10/2021', '10:50', 1, 1),
 (12, 'homeopathy', 8, 1, 2300, '20/10/2021', '10:50', 1, 1),
-(13, 'homeopathy', 25, 79, 2300, '2021-10-23', '1:45 PM', 1, 1),
-(14, 'Dermatologist', 3, 79, 2300, '2021-11-07', '3:45 PM', 1, 1);
+(13, 'homeopathy', 25, 79, 2300, '2021-10-23', '1:45 PM', 0, 1),
+(14, 'Dermatologist', 3, 79, 2300, '2021-11-07', '3:45 PM', 1, 1),
+(15, 'Test', 1, 79, 2300, '2021-10-22', '11:00 AM', 1, 1),
+(16, 'homeopathy', 1, 79, 2300, '2021-11-06', '12:00 PM', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -236,7 +238,7 @@ CREATE TABLE `tblmedicalhistory` (
 --
 
 INSERT INTO `tblmedicalhistory` (`PatientID`, `BloodPressure`, `BloodSugar`, `Weight`, `Temperature`, `MedicalPres`, `CreationDate`) VALUES
-(1, 'DAS', 'ASD', '44', 'DSAD', 'ASDSA', '2021-10-22 12:37:20'),
+(1, 'asdfghjk', 'ASDa', '66', 'ads', 'da', '2021-10-23 05:43:40'),
 (3, 'asdf', 'sdfg', '55', 'dssf', 'asd', '2021-10-21 05:03:05');
 
 -- --------------------------------------------------------
@@ -354,7 +356,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `appointment`
 --
 ALTER TABLE `appointment`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `docslot`
