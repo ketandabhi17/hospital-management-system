@@ -9,7 +9,7 @@ echo $did;
 // $u=mysqli_query($con,"SELECT * FROM doctors where doc_id=$did");
 if(isset($_POST['submit']))
 {
-	$docspecialization=$_POST['doctorspecialization'];
+$docspecialization=$_POST['doctorspecialization'];
 $docname=$_POST['doctorName'];
 $docaddress=$_POST['address'];
 $docfees=$_POST['docFees'];

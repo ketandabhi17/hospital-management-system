@@ -179,7 +179,7 @@ while ($row=$ret->fetch_array()) {
  <!-- <button class="btn btn-primary waves-effect waves-light w-lg">Update Medical History</button>   -->
  <button class="btn btn-primary waves-effect waves-light w-lg" data-toggle="modal" data-target="#myModal">Add Medical History</button> 
  <button class="btn btn-primary waves-effect waves-light w-lg" data-toggle="modal" data-target="#update">update Medical History</button> 
- <a href="view-patient.php?Patientid=<?php echo $vid?>&del=delete" onClick="return confirm('Are you sure you want to delete?')"class="btn btn-transparent btn-xs tooltips" tooltip-placement="top" tooltip="Remove"><i class="fa fa-times fa fa-white"></i></a>
+ <a href="view-patient.php?Patientid=<?php echo $vid?>&del=delete" onClick="return confirm('Are you sure you want to delete?')"class="btn btn-transparent btn-xs tooltips" tooltip-placement="top" tooltip="Remove"><i class="fa fa-trash-o"></i></a>
 </p>  
 
 <?php  ?>
@@ -193,19 +193,26 @@ while ($row=$ret->fetch_array()) {
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
+                                                
                                                 <div class="modal-body">
-                                                <table class="table table-bordered table-hover data-tables">
-                                          <form method="post" name="submit">
+                                                  <table class="table table-bordered table-hover data-tables">
+                                                    <?php $sql=$con->query("SELECT * from tblpatient where Pat_id='$vid'");
+                                                    while($data=$sql->fetch_array())
+                                                    {
+                                                    }
+                                                      ?>
+                                                    
+                                                    <form method="post" name="submit">
 
                                               <tr>
                                             <th>Blood Pressure :</th>
                                             <td>
                                               <?php
-                                                $q=$con->query("SELECT  from tblmedicalhistory where PatientID= ".$_GET['Patientid']."");
+                                                // $q=$con->query("SELECT  from tblmedicalhistory where PatientID= ".$_GET['Patientid']."");
                                                 // $a=$q->fetch_array();
                                                 // echo $a;
                                                 ?>
-                                            <input name="bp" placeholder="Blood Pressure" class="form-control wd-450" required="true"><?php echo htmlentities($a['BloodPressure']);?></td>
+                                            <input name="bp" placeholder="Blood Pressure" class="form-control wd-450" required="true"><?php echo htmlentities($data['BloodPressure']);?></td>
                                           </tr>                          
                                             <tr>
                                             <th>Blood Sugar :</th>

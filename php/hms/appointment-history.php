@@ -74,7 +74,7 @@ if(isset($_GET['cancel']))
 												<th>Specialization</th>
 												<th>Consultancy Fee</th>
 												<th>Appointment Date / Time </th>
-												<th>Appointment Creation Date  </th>
+												<!-- <th>Appointment Creation Date  </th> -->
 												<th>Current Status</th>
 												<th>Action</th>
 												
@@ -82,7 +82,7 @@ if(isset($_GET['cancel']))
 										</thead>
 										<tbody>
 											<?php
-											$sql=$con->query("SELECT doctors.doctorName as docname,appointment.*  from appointment join doctors on doctors.id=appointment.doctorId where appointment.userId='".$_SESSION['id']."'");
+											$sql=$con->query("SELECT doctors.doctorName as docname,appointment.* from appointment join doctors on doctors.doc_id=appointment.doctorId where appointment.userId='".$_SESSION['id']."'");
 											$cnt=1;
 											while($row=$sql->fetch_array())
 											{
@@ -96,7 +96,8 @@ if(isset($_GET['cancel']))
 												<td><?php echo $row['appointmentDate'];?> / <?php echo
 												 $row['appointmentTime'];?>
 												</td>
-												<td><?php echo $row['postingDate'];?></td>
+												<!-- <td><?php 
+												// echo $row['postingDate'];?></td> -->
 												<td>
 <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
 {
