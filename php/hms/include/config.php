@@ -1,14 +1,12 @@
 <?php
-define('DB_SERVER','mysql8');
-define('DB_USER','root');
-define('DB_PASS' ,'root');
-define('DB_NAME', 'HMS');
-$con = mysqli_connect($DB_SERVER,$DB_USER,$DB_PASS,$DB_NAME);
+$DB_SERVER="mysql8";
+$DB_USER="root";
+$DB_PASS="root";
+$DB_NAME="HMS";
+$con = new mysqli($DB_SERVER,$DB_USER,$DB_PASS,$DB_NAME);
 // Check connection
-if (mysqli_connect_errno())
+if ($con->connect_errno)
 {
- echo "Failed to connect to MySQL: " . mysqli_connect_error();
+ echo "Failed to connect to MySQL: " . $con->connect_error;
 }
-
-
 ?>

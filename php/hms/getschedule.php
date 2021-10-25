@@ -1,9 +1,8 @@
-<!-- <?php
+ <?php
 // session_start();
-// include_once 'include/config.php';
-// $q = $_GET['q'];
-// $res = mysqli_query($con,"SELECT * FROM docslot WHERE date='$q'");
-// if (!$res) {
+include 'include/config.php';
+// $res = $con->query("SELECT * FROM docslot WHERE date='$q'");
+// // if (!$res) {
 // die("Error running $sql: " . mysqli_error());
 // }
 ?>
@@ -14,10 +13,10 @@
     </head>
     <body>
         <?php
-        // if (mysqli_num_rows($res)==0) {
-        // echo "<div class='alert alert-danger' role='alert'>Doctor is not available at the moment. Please try again later.</div>";
+        if ($res->num_rows==0) {
+        echo "<div class='alert alert-danger' role='alert'>Doctor is not available at the moment. Please try again later.</div>";
         
-        // } else {
+        } else {
         echo "   <table class='table table-hover'>";
             echo " <thead>";
                 echo " <tr>";
@@ -71,7 +70,7 @@
                 
                 <?php
                 }
-                }
+            }
                 ?>
             </tbody>
             <!-- modal start -->
@@ -81,4 +80,4 @@
             
             
         </body>
-    </html> -->
+    </html>

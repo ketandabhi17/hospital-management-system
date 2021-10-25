@@ -100,6 +100,25 @@ include('config.php');
 										</div>
 									</div>
 								</div>
+
+								<div class="col-sm-4">
+									<div class="panel panel-white no-radius text-center">
+										<div class="panel-body">
+											<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-clock-o  "></i> </span>
+											<h2 class="StepTitle"> Get schedule </h2>
+											
+											<p class="links cl-effect-1">
+												<a href="getschedule.php">
+													Get Schedule
+												</a>
+											</p>
+										</div>
+									</div>
+								</div>
+
+
+
+
 							</div>
 						</div>
 			

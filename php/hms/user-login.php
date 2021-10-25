@@ -1,6 +1,6 @@
 <?php
 session_start();
-if($_SESSION["userid"]!="")
+if($_SESSION["id"]!="")
 {
 
 	$url="dashboard.php";
@@ -30,7 +30,7 @@ $num=$ret->fetch_array();
 
 if($num>0)
 {
-$extra="dashboard.php";//
+$extra="dashboard.php";
 $_SESSION['login']=$_POST['username'];
 $_SESSION['id']=$num['id'];
 $host=$_SERVER['HTTP_HOST'];

@@ -14,26 +14,44 @@ function clearResult($conn){
 if(isset($_POST['submit']))
 {
 $date=$_POST['date'];
+$timestamp = strtotime($date); 
+$new_date = date('y-m-d', $timestamp);
+
+// $date = date_format(date_create_from_format('Y-m-d', $date), 'd-m-Y');
 // echo $date;
 $day=$_POST['scheduleday'];
 // echo $day;
+
+
 $start=$_POST['starttime'];
+// SELECT TIME_FORMAT("$start", "%r"); 
+// $start1=date('H:i',strtotime($start));
+// // $start=date_format($start, 'g:i A');
+// $time = date("h:i:sa", strtotime("$start"));
+// $d=mktime($start);
+// $start=date("h:i:s");
+
+
 // echo $start;
 $end=$_POST['endtime'];
+// $end1=date ('H:i',strtotime($end));
+// $end=time_format($end, 'g:i A');
+// $d=mktime($end);
+// $end=date("h:i:s");
 // echo $end;
 $availablity=$_POST['bookavail'];
 // echo $availablity;
-// clearResult($con);
-$sql=$con->query("call `add_docslot`('$date','$day','$start','$end','$availablity')");
-// clearResult($con);
+clearResult($con);
+$sql=$con->query("call add_docslot('$new_date','$day','$start','$end','$availablity')");
+clearResult($con);
 if($sql)
 {
 echo "<script>alert('Slot Details added Successfully');</script>";
 
 }
-// else{
-//     echo "<script>alert(' Slot Details not added !!!!!!!!!!!!!!!!');</script>";
-// }
+else{
+    echo "<script>alert(' Slot Details not added !!!!!!!!!!!!!!!!');</script>";
+}
 }
 ?>
 <!DOCTYPE html>
@@ -81,8 +99,6 @@ echo "<script>alert('Slot Details added Successfully');</script>";
 								</ol>
 							</div>
 						</section>
-						<!-- end: PAGE TITLE -->
-						<!-- start: BASIC EXAMPLE -->
 						<div class="container-fluid container-fullw bg-white">
 							<div class="row">
 								<div class="col-md-12">
@@ -112,7 +128,7 @@ echo "<script>alert('Slot Details added Successfully');</script>";
                                      <i class="fa fa-calendar">
                                      </i>
                                     </div>
-                                    <input class="form-control" id="date" name="date" type="text" required/>
+                                    <input class="form-control" id="date" name="date" type="date" required/>
                                    </div>
                                   </div>
                                  </div>
@@ -157,13 +173,15 @@ echo "<script>alert('Slot Details added Successfully');</script>";
                                    </span>
                                   </label>
 
+                                 
+                                  eg : 10:00:00 PM
                                   <div class="col-sm-10">
                                    <div class="input-group clockpicker"  data-align="top" data-autoclose="true">
                                     <div class="input-group-addon">
                                      <i class="fa fa-clock-o">
                                      </i>
                                     </div>
-                                    <input class="form-control" id="starttime" name="starttime" type="text" required/>
+                                    <input class="form-control" id="starttime" name="starttime" type="time" required/>
                                    </div>
                                   </div>
                                  </div>
@@ -174,14 +192,14 @@ echo "<script>alert('Slot Details added Successfully');</script>";
                                    <span class="asteriskField">
                                     *
                                    </span>
-                                  </label>
+                                  </label>eg : 10:00:00 PM
                                   <div class="col-sm-10">
                                    <div class="input-group clockpicker"  data-align="top" data-autoclose="true">
                                     <div class="input-group-addon">
                                      <i class="fa fa-clock-o">
                                      </i>
                                     </div>
-                                    <input class="form-control" id="endtime" name="endtime" type="text" required/>
+                                    <input class="form-control" id="endtime" name="endtime" type="time" required/>
                                    </div>
                                   </div>
                                  </div>
@@ -223,16 +241,6 @@ echo "<script>alert('Slot Details added Successfully');</script>";
 										</div>
 									
 								</div>
-							
-						<!-- end: BASIC EXAMPLE -->
-			
-					
-					
-						
-						
-					
-						<!-- end: SELECT BOXES -->
-						
 					</div>
 				</div>
 			</div>
@@ -240,15 +248,12 @@ echo "<script>alert('Slot Details added Successfully');</script>";
 	<?php include('include/footer.php');?>
 			<!-- end: FOOTER -->
 		</div>
-		<!-- start: MAIN JAVASCRIPTS -->
 		<script src="vendor/jquery/jquery.min.js"></script>
 		<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 		<script src="vendor/modernizr/modernizr.js"></script>
 		<script src="vendor/jquery-cookie/jquery.cookie.js"></script>
 		<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 		<script src="vendor/switchery/switchery.min.js"></script>
-		<!-- end: MAIN JAVASCRIPTS -->
-		<!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
 		<script src="vendor/maskedinput/jquery.maskedinput.min.js"></script>
 		<script src="vendor/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
 		<script src="vendor/autosize/autosize.min.js"></script>
@@ -257,10 +262,7 @@ echo "<script>alert('Slot Details added Successfully');</script>";
 		<script src="vendor/select2/select2.min.js"></script>
 		<script src="vendor/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
 		<script src="vendor/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
-		<!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
-		<!-- start: CLIP-TWO JAVASCRIPTS -->
 		<script src="assets/js/main.js"></script>
-		<!-- start: JavaScript Event Handlers for this page -->
 		<script src="assets/js/form-elements.js"></script>
 		<script>
 			jQuery(document).ready(function() {
@@ -268,7 +270,8 @@ echo "<script>alert('Slot Details added Successfully');</script>";
 				FormElements.init();
 			});
 		</script>
-		<!-- end: JavaScript Event Handlers for this page -->
-		<!-- end: CLIP-TWO JAVASCRIPTS -->
+    <script type="text/javascript">
+            $('#timepicker1').timepicker();
+        </script>
 	</body>
 </html>

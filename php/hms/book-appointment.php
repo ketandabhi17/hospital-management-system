@@ -13,23 +13,24 @@ function clearResult($conn){
 	}
 if(isset($_POST['submit']))
 {
+	
 $specilization=$_POST['Doctorspecialization'];
-echo $specilization;
+// echo $specilization;
 $doctorid=$_POST['doc_id'];
 // $doctorid=$_POST['doctor'];
-echo $doctorid;
+// echo $doctorid;
 $userid=$_SESSION['id'];
 echo $userid;
 $fees=$_POST['fees'];
-echo $fees;
+// echo $fees;
 $appdate=$_POST['appdate'];
-echo $appdate;
+// echo $appdate;
 $time=$_POST['apptime'];
-echo $time;
+// echo $time;
 $userstatus=1;
-echo $userstatus;
+// echo $userstatus;
 $docstatus=1;
-echo $docstatus;
+// echo $docstatus;
 // $b=$_GET["doc_id"];
 // echo $b;
 // $a=$con->query("select doc_id from doctors where doc_id = $b");
@@ -37,10 +38,10 @@ echo $docstatus;
 // $_SESSION['doc_id']=$c;
 // echo $c;
 // clearResult($con);
-// $query=$con->query("call `add_appointment`($specilization,3,$userid,1000,$appdate,$time,$userstatus,$docstatus)");
-$sql=$con->query("INSERT INTO `appointment` (`id`, `doctorSpecialization`, `doctorId`, `userId`, `consultancyFees`, `appointmentDate`, `appointmentTime`, `userStatus`, `doctorStatus`)
- VALUES (NULL,'$specilization', $doctorid, $userid, '2300', '$appdate', '$time', $userstatus, $docstatus)");
-clearResult($con);
+$sql=$con->query("call `add_appointment`('$specilization',$doctorid,$userid,1000,'$appdate','$time',$userstatus,$docstatus)");
+// $sql=$con->query("INSERT INTO appointment ( doctorSpecialization, doctorId, userId, consultancyFees, appointmentDate, appointmentTime, userStatus, doctorStatus)
+//  VALUES ('$specilization',$doctorid,$userid,220,'$appdate','$time',$userstatus,$docstatus)");
+//clearResult($con);
 
 	if($sql)
 	{
@@ -74,30 +75,30 @@ else{
 		<link rel="stylesheet" href="assets/css/plugins.css">
 		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
 		<script>
-function getdoctor(val) {
-	$.ajax({
-	type: "POST",
-	url: "get_doctor.php",
-	data:'specilizationid='+val,
-	success: function(data){
-		$("#doctor").html(data);
-	}
-	});
-}
-</script>	
+// function getdoctor(val) {
+// 	$.ajax({
+// 	type: "POST",
+// 	url: "get_doctor.php",
+// 	data:'specilizationid='+val,
+// 	success: function(data){
+// 		$("#doctor").html(data);
+// 	}
+// 	});
+// }
+// </script>	
 
 
-<script>
-function getfee(val) {
-	$.ajax({
-	type: "POST",
-	url: "get_doctor.php",
-	data:'doctor='+val,
-	success: function(data){
-		$("#fees").html(data);
-	}
-	});
-}
+// <script>
+// function getfee(val) {
+// 	$.ajax({
+// 	type: "POST",
+// 	url: "get_doctor.php",
+// 	data:'doctor='+val,
+// 	success: function(data){
+// 		$("#fees").html(data);
+// 	}
+// 	});
+// }
 </script>	
 
 
@@ -154,7 +155,7 @@ function getfee(val) {
 															</label>
 																<select name="Doctorspecialization" class="form-control" onChange="getdoctor(this.value);" required="required">
 																<option value="">Select Specialization</option>
-																<?php $ret=$con->query("select * from doctorspecilization");
+																<?php $ret=$con->query("SELECT * from doctorspecilization");
 																	clearResult($con);
 																	while($row=$ret->fetch_array())
 																	{
@@ -174,7 +175,7 @@ function getfee(val) {
 															</label>
 															<select name="doc_id" class="form-control" id="doc_id" onChange="getfee(this.value);" required="required">
 															<option value="doc_id">Select Doctor</option>
-															<?php $ret=$con->query("select * from doctors");
+															<?php $ret=$con->query("SELECT doctors.doctorName,doctorspecilization.specilization from doctors INNER JOIN doctorspecilization ON doctors.specilization=doctorspecilization.spec_id and doctorspecilization.spec_id=1");
 															while($row=$ret->fetch_array())
 															{
 															?>
@@ -196,22 +197,25 @@ function getfee(val) {
 																Consultancy Fees
 															</label>
 															<select name="fees" class="form-control" id="fees"  readonly>
-																<option value="100">100</option>
+																<?php
+																
+																?>
 															</select>
+
 														</div>
 														
 														<div class="form-group">
 															<label for="AppointmentDate">
 																Date
 															</label>
-															<input class="form-control datepicker" name="appdate"  required="required" data-date-format="yyyy-mm-dd">
+															<input class="form-control " id="datepicker" name="appdate"  required="required" type="date">
 	
 															</div>
 														</div>
 														
 														<div class="form-group">
 															<label for="Appointmenttime">Time</label>
-															<input class="form-control" name="apptime" id="timepicker1" required="required">eg : 10:00 PM
+															<input class="form-control" name="apptime"  type="time" required="required">eg : 10:00 PM
 														</div>
 														<button type="submit" name="submit" class="btn btn-o btn-primary">
 															Submit
@@ -271,14 +275,9 @@ function getfee(val) {
 				FormElements.init();
 			});
 
-			$('.datepicker').datepicker({
-    format: 'yyyy-mm-dd',
-    startDate: '-3d'
-});
-		</script>
-		  <script type="text/javascript">
-            $('#timepicker1').timepicker();
+			
         </script>
+		
 		<!-- end: JavaScript Event Handlers for this page -->
 		<!-- end: CLIP-TWO JAVASCRIPTS -->
 
