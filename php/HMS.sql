@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Oct 23, 2021 at 07:20 AM
+-- Generation Time: Oct 26, 2021 at 01:42 PM
 -- Server version: 8.0.26
 -- PHP Version: 7.4.24
 
@@ -30,9 +30,9 @@ INSERT into appointment(doctorSpecialization,doctorId,userId,consultancyFees,app
 values(spec,doc_id,user_id,fees,appointdate,apointtime,userstatus,docstatus);
 END$$
 
-CREATE DEFINER=`root`@`%` PROCEDURE `add_docslot` (IN `dt` DATE, IN `dy` VARCHAR(255), IN `strt` TIME, IN `end` TIME, IN `avail` VARCHAR(255))  BEGIN
+CREATE DEFINER=`root`@`%` PROCEDURE `add_docslot` (IN `dt` DATE, IN `dy` VARCHAR(255), IN `strt` TIME, IN `endtime` TIME, IN `avail` VARCHAR(255))  BEGIN
 INSERT INTO `docslot`(`date`,`day`,`start_time`,`end_time`,`availability`)
-VALUES(dt, dy, strt, end, avail);
+VALUES(dt, dy, strt, endtime, avail);
 END$$
 
 CREATE DEFINER=`root`@`%` PROCEDURE `add_doctor` (IN `specilization` INT(20), IN `doctorName` VARCHAR(255), IN `address` LONGTEXT, IN `docFees` VARCHAR(255), IN `contactno` BIGINT(10), IN `docEmail` VARCHAR(255), IN `password` VARCHAR(255), IN `creationDate` TIMESTAMP, IN `updationDate` TIMESTAMP)  BEGIN
@@ -73,6 +73,10 @@ CREATE DEFINER=`root`@`%` PROCEDURE `update_doctor` (IN `did` INT(10), IN `spec`
 
 CREATE DEFINER=`root`@`%` PROCEDURE `update_patient` (IN `id` INT(10), IN `name` VARCHAR(200), IN `cont` BIGINT(100), IN `email` VARCHAR(200), IN `gender` VARCHAR(50), IN `address` MEDIUMTEXT, IN `age` INT(10), IN `medhis` MEDIUMTEXT)  BEGIN
 UPDATE `tblpatient` SET `PatientName` = name, `PatientContno` = cont, `PatientEmail` =email, `PatientGender` = gender, `PatientAdd` =address, `PatientAge` = age, `PatientMedhis` = medhis WHERE `tblpatient`.`Pat_id` = id; 
+END$$
+
+CREATE DEFINER=`root`@`%` PROCEDURE `update_user` (IN `id` INT(10), IN `fname` VARCHAR(100), IN `address` VARCHAR(100), IN `city` VARCHAR(100), IN `gender` VARCHAR(100))  BEGIN
+UPDATE users set fullname='fname',address='address',city='city',gender='gender' where id=id;
 END$$
 
 DELIMITER ;
@@ -134,8 +138,25 @@ INSERT INTO `appointment` (`id`, `doctorSpecialization`, `doctorId`, `userId`, `
 (12, 'homeopathy', 8, 1, 2300, '20/10/2021', '10:50', 1, 1),
 (13, 'homeopathy', 25, 79, 2300, '2021-10-23', '1:45 PM', 0, 1),
 (14, 'Dermatologist', 3, 79, 2300, '2021-11-07', '3:45 PM', 1, 1),
-(15, 'Test', 1, 79, 2300, '2021-10-22', '11:00 AM', 1, 1),
-(16, 'homeopathy', 1, 79, 2300, '2021-11-06', '12:00 PM', 1, 1);
+(15, 'Test', 1, 79, 2300, '2021-10-22', '11:00 AM', 1, 0),
+(16, 'homeopathy', 1, 79, 2300, '2021-11-06', '12:00 PM', 1, 0),
+(17, 'Dermatologist', 21, 80, 2300, '2021-11-06', '9:30 AM', 1, 1),
+(18, 'homeopathy', 26, 80, 2300, '2021-11-06', '10:30 AM', 1, 1),
+(19, 'Dermatologist', 1, 1, 220, '2022-01-10', '11:30 AM', 1, 1),
+(20, 'Dermatologist', 4, 1, 220, '2022-01-10', '11:30 AM', 1, 1),
+(21, 'Test', 4, 79, 220, '2021-11-05', '11:45 AM', 1, 1),
+(22, 'Dermatologist', 1, 80, 220, '2021-11-01', '11:45 AM', 1, 0),
+(23, 'Dermatologist', 1, 79, 220, '2021-10-30', '11:45 AM', 1, 0),
+(24, 'Dermatologist', 1, 79, 220, '2021-10-30', '11:45 AM', 1, 0),
+(25, 'homeopathy', 16, 79, 220, '2021-11-07', '11:45 AM', 1, 1),
+(26, 'Dermatologist', 3, 79, 1000, '2021-11-06', '12:00 PM', 1, 1),
+(27, '3', 26, 79, 1000, '2021-10-20', '11:00', 1, 1),
+(28, '3', 26, 79, 1000, '2021-10-27', '11:00', 1, 1),
+(29, '3', 26, 79, 1000, '2021-10-27', '11:00', 1, 1),
+(30, '3', 26, 79, 1000, '2021-10-27', '11:00', 1, 1),
+(31, '3', 26, 79, 1000, '2021-10-27', '11:00', 1, 1),
+(32, '1', 3, 79, 1000, '2021-10-27', '16:09', 1, 1),
+(33, '1', 3, 79, 1000, '2021-10-29', '16:13', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -159,7 +180,45 @@ CREATE TABLE `docslot` (
 INSERT INTO `docslot` (`slot_id`, `date`, `day`, `start_time`, `end_time`, `availability`) VALUES
 (1, '2021-10-23', 'saturday', '12:00:00', '01:00:00', 'available'),
 (2, '2021-10-26', 'tuesday', '00:00:12', '00:00:01', 'not available'),
-(3, '2021-10-20', 'Wednesday', '00:00:10', '00:00:12', 'available');
+(3, '2021-10-20', 'Wednesday', '00:00:10', '00:00:12', 'available'),
+(4, '2021-10-28', 'monday', '00:00:10', '00:00:12', 'available'),
+(5, '2021-05-25', 'monday', '00:00:12', '00:00:01', 'not avail'),
+(6, '2021-02-12', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(7, '2021-02-12', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(8, '2021-02-12', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(9, '2021-02-12', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(10, '2021-02-12', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(11, '2021-10-06', 'monday', '00:00:12', '00:00:02', 'not available'),
+(12, '1970-01-01', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(13, '1970-01-01', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(14, '2006-07-21', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(15, '2006-07-21', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(16, '2006-07-21', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(17, '2006-07-21', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(18, '2021-07-06', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(19, '2021-10-18', 'Monday', '00:00:12', '00:00:02', 'Available'),
+(20, '2021-10-18', 'Tuesday', '00:00:09', '00:00:01', 'notavail'),
+(21, '2021-10-18', 'Tuesday', '00:00:09', '00:00:01', 'notavail'),
+(22, '2021-10-18', 'Thursday', '12:00:00', '01:00:00', 'available'),
+(23, '2021-07-06', 'Monday', '00:00:12', '00:00:01', 'available'),
+(24, '2021-07-06', 'Monday', '00:00:12', '00:00:01', 'available'),
+(25, '2021-07-06', 'Monday', '00:00:00', '00:00:01', 'available'),
+(26, '2021-07-06', 'Monday', '12:00:00', '00:00:01', 'available'),
+(27, '2021-07-06', 'Monday', '00:00:00', '00:00:01', 'available'),
+(28, '2021-07-06', 'Monday', '00:00:00', '00:00:00', 'available'),
+(29, '2021-07-06', 'Monday', '00:00:00', '00:00:00', 'available'),
+(30, '2021-07-06', 'Monday', '00:00:00', '00:00:00', 'available'),
+(31, '2021-10-18', 'Tuesday', '00:00:00', '00:00:00', 'notavail'),
+(32, '2021-10-18', 'Tuesday', '00:00:00', '00:00:00', 'notavail'),
+(33, '2021-10-18', 'Tuesday', '08:03:01', '08:03:01', 'notavail'),
+(34, '1970-01-01', 'Tuesday', '08:03:41', '08:03:41', 'available'),
+(35, '1970-01-01', 'Tuesday', '08:04:33', '08:04:33', 'available'),
+(36, '1970-01-01', 'Tuesday', '00:00:00', '00:00:00', 'available'),
+(37, '1970-01-01', 'Wednesday', '00:00:00', '00:00:00', 'available'),
+(38, '2021-11-14', 'Thursday', '00:00:00', '00:00:00', 'available'),
+(39, '2021-11-14', 'Thursday', '11:15:00', '12:15:00', 'available'),
+(40, '2021-10-26', 'Monday', '01:00:00', '02:00:00', 'available'),
+(41, '2021-10-30', 'Monday', '09:00:00', '10:00:00', 'available');
 
 -- --------------------------------------------------------
 
@@ -186,11 +245,11 @@ CREATE TABLE `doctors` (
 
 INSERT INTO `doctors` (`doc_id`, `specilization`, `doctorName`, `address`, `docFees`, `contactno`, `docEmail`, `password`, `creationDate`, `updationDate`) VALUES
 (1, 2, 'Aman', 'Paldi', '10000', 6757775567, 'aman@gmail.com', '12345', '2021-10-12 08:39:18', '2021-10-13 06:49:45'),
-(3, 1, 'jay', 'nehrunagar', '25033', 8956230235, 'jay@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '2021-10-13 14:07:30', '2021-10-14 07:46:35'),
+(3, 1, 'jay  ', 'nehrunagar', '25033', 8956230235, 'jay@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '2021-10-13 14:07:30', '2021-10-26 11:49:07'),
 (4, 3, 'kishan', 'puna', '500', 9865744215, 'kishan@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '2021-10-13 14:07:30', '2021-10-13 08:25:03'),
 (16, 2, 'bharat', 'rajkot', '500', 9856230145, 'bharat@gmail.com', '123456', '2021-10-13 14:07:30', '2021-10-13 14:07:30'),
 (21, 2, 'rohit', 'mumbai', '1500', 8945451245, 'rohit@gmail.com', '123456', '2021-10-20 11:15:39', '2021-10-21 07:38:25'),
-(22, 2, 'rahul kl', 'banglore', '60000', 789562130, 'rahul@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '2021-10-20 11:26:19', '2021-10-21 07:44:32'),
+(22, 2, 'rahul lokesh', 'punjab', '1100', 9865324578, 'rahul@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '2021-10-20 11:26:19', '2021-10-26 11:59:27'),
 (24, 1, 'mahendra', 'bihar', '1500', 897774532, 'mahendra@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '2021-10-21 07:54:42', '2021-10-21 07:54:42'),
 (25, 2, 'mahendra', 'bihar', '15000', 9865321487, 'mahendra@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '2021-10-21 07:55:30', '2021-10-21 07:55:30'),
 (26, 3, 'rishabh', 'delhi', '1200', 8956231245, 'rishabh@gmail.com', '3d9188577cc9bfe9291ac66b5cc872b7', '2021-10-21 08:01:49', '2021-10-21 08:01:49');
@@ -270,8 +329,7 @@ INSERT INTO `tblpatient` (`Pat_id`, `PatientName`, `PatientContno`, `PatientEmai
 (7, 'sumit', 8956231245, 'a@gmail.com', 'Male', 'rajkot', 10, 'he is health'),
 (8, 'bharat', 1234567890, 'bharat@gmail.com', 'male', 'ahmedabad', 22, 'no medical history'),
 (9, 'rishi', 1234567890, 'rishi@gmail.com', 'male', 'ahmedabad', 22, 'no medical history'),
-(10, 'aditya', 1234567890, 'adi@gmail.com', 'male', 'botad', 15, 'no medical history'),
-(11, 'paresh', 9898989898, 'paresh@gmail.com', 'male', 'bhuj', 22, 'no medical history');
+(10, 'aditya', 1234567890, 'adi@gmail.com', 'male', 'botad', 15, 'no medical history');
 
 -- --------------------------------------------------------
 
@@ -294,12 +352,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `fullname`, `address`, `city`, `gender`, `email`, `password`) VALUES
-(2, 'Sarita pandey', 'New Delhi India', 'Delhi', 'female', 'test@gmail.com', 'f925916e2754e5e03f75dd58a5733251'),
-(3, 'Amit', 'New Delhi', 'New delhi', 'male', 'amit@gmail.com', 'f925916e2754e5e03f75dd58a5733251'),
-(4, 'Rahul Singh', 'New Delhi', 'New delhi', 'male', 'rahul@gmail.com', 'f925916e2754e5e03f75dd58a5733251'),
-(6, 'Test user', 'New Delhi', 'Delhi', 'male', 'tetuser@gmail.com', 'f925916e2754e5e03f75dd58a5733251'),
-(7, 'John', 'USA', 'Newyork', 'male', 'john@test.com', 'f925916e2754e5e03f75dd58a5733251'),
-(79, 'ketan', 'botad', 'botad', 'male', 'k@gmail.com', 'e10adc3949ba59abbe56e057f20f883e');
+(2, 'fname', 'address', 'city', 'gender', 'test@gmail.com', 'f925916e2754e5e03f75dd58a5733251'),
+(3, 'fname', 'address', 'city', 'gender', 'amit@gmail.com', 'f925916e2754e5e03f75dd58a5733251'),
+(4, 'fname', 'address', 'city', 'gender', 'rahul@gmail.com', 'f925916e2754e5e03f75dd58a5733251'),
+(6, 'fname', 'address', 'city', 'gender', 'tetuser@gmail.com', 'f925916e2754e5e03f75dd58a5733251'),
+(7, 'fname', 'address', 'city', 'gender', 'john@test.com', 'f925916e2754e5e03f75dd58a5733251'),
+(79, '', 'botad', 'botad', 'male', 'k@gmail.com', 'e10adc3949ba59abbe56e057f20f883e'),
+(80, 'fname', 'address', 'city', 'gender', 'ravi@gmail.com', 'e10adc3949ba59abbe56e057f20f883e'),
+(81, 'fname', 'address', 'city', 'gender', 'new@gmail.com', 'e10adc3949ba59abbe56e057f20f883e');
 
 --
 -- Indexes for dumped tables
@@ -356,13 +416,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `appointment`
 --
 ALTER TABLE `appointment`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `docslot`
 --
 ALTER TABLE `docslot`
-  MODIFY `slot_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `slot_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `doctors`
@@ -386,7 +446,7 @@ ALTER TABLE `tblpatient`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- Constraints for dumped tables
