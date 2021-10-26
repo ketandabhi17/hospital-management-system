@@ -33,6 +33,7 @@ if($num>0)
 $extra="dashboard.php";
 $_SESSION['login']=$_POST['username'];
 $_SESSION['id']=$num['id'];
+$_SESSION['spec_id']="";
 $host=$_SERVER['HTTP_HOST'];
 $uip=$_SERVER['REMOTE_ADDR'];
 $status=1;

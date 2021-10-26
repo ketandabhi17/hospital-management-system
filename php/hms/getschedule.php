@@ -1,10 +1,11 @@
  <?php
 // session_start();
 include 'include/config.php';
-// $res = $con->query("SELECT * FROM docslot WHERE date='$q'");
-// // if (!$res) {
-// die("Error running $sql: " . mysqli_error());
-// }
+$q="26/10/2021";
+$res = $con->query("SELECT * FROM docslot WHERE date='2021-10-30'");
+if (!$res) {
+die("Error running: ". mysqli_error($con));
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,12 +31,12 @@ include 'include/config.php';
                 echo " </tr>";
             echo "  </thead>";
             echo "  <tbody>";
-                while($row = mysqli_fetch_array($res)) {
+                while($row = $res->fetch_array()) {
                 ?>
                 <tr>
                     <?php
-                    // $avail=null;
-                    // $btnclick="";
+                    $avail=null;
+                    $btnclick="";
                     if ($row['bookAvail']!='available') {
                     $avail="danger";
                     $btnstate="disabled";

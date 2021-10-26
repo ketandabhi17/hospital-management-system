@@ -35,7 +35,7 @@ if(isset($_GET['del']))
                   $_SESSION['msg']="data deleted !!";
 		  }
       else{
-        // echo '<script>alert("Something Went Wrong. Please try again")</script>';
+        echo '<script>alert("Something Went Wrong. Please try again")</script>';
 
       }
 
@@ -88,8 +88,8 @@ if(isset($_GET['del']))
 <div class="col-md-12">
 <h5 class="over-title margin-bottom-15">Manage <span class="text-bold">Patients</span></h5>
 <?php
-                               $vid=$_GET['viewid'];
-                               $ret=$con->query("SELECT * from tblpatient where Pat_id='$vid'");
+$vid=$_GET['viewid'];
+$ret=$con->query("SELECT * from tblpatient where Pat_id='$vid'");
 $cnt=1;
 while ($row=$ret->fetch_array()) {
                                ?>

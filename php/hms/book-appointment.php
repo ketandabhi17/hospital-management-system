@@ -1,5 +1,6 @@
 <?php
 session_start();
+// $_SESSION['spec_id']="";
 //error_reporting(0);
 include('config.php');
 include('include/checklogin.php');
@@ -75,30 +76,35 @@ else{
 		<link rel="stylesheet" href="assets/css/plugins.css">
 		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
 		<script>
-// function getdoctor(val) {
-// 	$.ajax({
-// 	type: "POST",
-// 	url: "get_doctor.php",
-// 	data:'specilizationid='+val,
-// 	success: function(data){
-// 		$("#doctor").html(data);
-// 	}
-// 	});
-// }
-// </script>	
+function changedocor(selectcontrol) {
+	var val = selectcontrol.value;
+	// alert(val);
+	$.ajax({
+	type: "POST",
+	url: "get_doctor.php",
+	data:'specilizationid='+val,
+	success: function(data){
+		$("#doc_id").html(data);
+	}
+	});
+}
+</script>	
 
 
-// <script>
-// function getfee(val) {
-// 	$.ajax({
-// 	type: "POST",
-// 	url: "get_doctor.php",
-// 	data:'doctor='+val,
-// 	success: function(data){
-// 		$("#fees").html(data);
-// 	}
-// 	});
-// }
+ <script>
+function getfee(optionval) {
+	var val1 = optionval.value;
+	// alert(val1);
+	$.ajax({
+	type: "POST",
+	url: "get_fees.php",
+	data:'doc_id='+val1,
+	success: function(data){
+		// alert(data);
+		$("#docFees").val(data);
+	}
+	});
+}
 </script>	
 
 
@@ -150,19 +156,27 @@ else{
 
 
 														<div class="form-group">
-															<label for="DoctorSpecialization">
+														<label for="DoctorSpecialization">
 																Doctor Specialization
 															</label>
-																<select name="Doctorspecialization" class="form-control" onChange="getdoctor(this.value);" required="required">
-																<option value="">Select Specialization</option>
+															<select name="Doctorspecialization" onchange="changedocor(this);" class="form-control"  required="required">
+															<option>
+																	Select Specialization
+																</option>
 																<?php $ret=$con->query("SELECT * from doctorspecilization");
 																	clearResult($con);
 																	while($row=$ret->fetch_array())
 																	{
 																	?>
-																<option value="<?php echo htmlentities($row['specilization']);?>">
-																	<?php echo htmlentities($row['specilization']);?>
+																
+																<option value="<?php echo $row['spec_id']; ?>">														
+																	<?php
+																	 echo htmlentities($row['specilization']);
+																	//  echo htmlentities($row['spec_id']);
+																	 ?>
+																	 
 																</option>
+																
 																<?php } ?>
 																
 															</select>
@@ -173,19 +187,24 @@ else{
 															<label for="doc_id">
 																Doctors
 															</label>
-															<select name="doc_id" class="form-control" id="doc_id" onChange="getfee(this.value);" required="required">
-															<option value="doc_id">Select Doctor</option>
-															<?php $ret=$con->query("SELECT doctors.doctorName,doctorspecilization.specilization from doctors INNER JOIN doctorspecilization ON doctors.specilization=doctorspecilization.spec_id and doctorspecilization.spec_id=1");
-															while($row=$ret->fetch_array())
-															{
-															?>
-															<option value="<?php echo htmlentities($row['doc_id']);?>">
-																<?php echo htmlentities($row['doctorName']);?>
-																<?php echo htmlentities($row['doc_id']);?>
-															</option>
-															<?php } ?>
+															<select name="doc_id" class="form-control" id="doc_id" onchange="getfee(this);" required="required">
+															<option>Select Doctor</option>
+															<?php $ret=$con->query("SELECT * from doctors");
+																	clearResult($con);
+																	while($row=$ret->fetch_array())
+																	{
+																		?>
 																
-															</select>
+																<option value="<?php echo $row['doc_id']; ?>">														
+																	<?php
+																	 echo $row['doctorName'];
+																	 //  echo htmlentities($row['spec_id']);
+																	 ?>
+																	 
+																	</option>
+																	
+																	<?php } ?>
+																</select>
 														</div>
 
 
@@ -193,15 +212,11 @@ else{
 
 
 														<div class="form-group">
+															
 															<label for="consultancyfees">
 																Consultancy Fees
 															</label>
-															<select name="fees" class="form-control" id="fees"  readonly>
-																<?php
-																
-																?>
-															</select>
-
+														<input type="text" id="docFees"  class="form-control" readonly>
 														</div>
 														
 														<div class="form-group">

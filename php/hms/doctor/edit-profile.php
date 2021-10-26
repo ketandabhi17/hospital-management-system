@@ -11,7 +11,7 @@ $docaddress=$_POST['clinicaddress'];
 $docfees=$_POST['docfees'];
 $doccontactno=$_POST['doccontact'];
 $docemail=$_POST['docemail'];
-$sql=$con->query("UPDATE doctors set specilization='$docspecialization',doctorName='$docname',address='$docaddress',docFees='$docfees',contactno='$doccontactno' where id='".$_SESSION['id']."'");
+$sql=$con->query("UPDATE doctors set specilization=$docspecialization,doctorName='$docname',address='$docaddress',docFees=$docfees,contactno=$doccontactno where id={$_SESSION['id']}");
 if($sql)
 {
 echo "<script>alert('Doctor Details updated Successfully');</script>";
@@ -77,7 +77,7 @@ echo "<script>alert('Doctor Details updated Successfully');</script>";
 													<h5 class="panel-title">Edit Doctor</h5>
 												</div>
 												<div class="panel-body">
-									<?php $sql=$con->query("select * from doctors where docEmail='".$_SESSION['dlogin']."'");
+									<?php $sql=$con->query("SELECT * from doctors where docEmail='".$_SESSION['dlogin']."'");
 									while($data=$sql->fetch_array())
 									{
 									?>
@@ -93,12 +93,12 @@ echo "<script>alert('Doctor Details updated Successfully');</script>";
 																Doctor Specialization
 															</label>
 																<select name="Doctorspecialization" class="form-control" required="required">
-					<option value="<?php echo htmlentities($data['specilization']);?>">
-					<?php echo htmlentities($data['specilization']);?></option>
-					<?php $ret=$con->query("SELECT * from doctorspecilization");
-					while($row=$ret->fetch_array())
-					{
-					?>
+															<option value="<?php echo htmlentities($data['specilization']);?>">
+															<?php echo htmlentities($data['specilization']);?></option>
+															<?php $ret=$con->query("SELECT * from doctorspecilization");
+															while($row=$ret->fetch_array())
+															{
+															?>
 																<option value="<?php echo htmlentities($row['specilization']);?>">
 																	<?php echo htmlentities($row['specilization']);?>
 																</option>
